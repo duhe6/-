@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        #app {
+            position: relative;
+            border: 20px solid #f8bbd0;
+            background-color: #fce4ec;
+            width: 500px;
+            height: 500px;
+            margin: 15px auto;
+        }
+        
+        table {
+            border-collapse: collapse;
+            background-color: #fce4ec;
+        }
+        
+        td {
+            position: relative;
+            background-size: 100% 100%;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            /* background-color: #fce4ec; */
+            /* border: 1px solid #aaa; */
+        }
+        
+        td .snake {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .start,
+        .suspend {
+            cursor: pointer;
+            position: absolute;
+            width: 150px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .suspend {
+            display: none;
+            z-index: 2;
+        }
+    </style>
+</head>
+ 
+<body>
+    <!-- <h3 id="f">帧编号:0</h3>
+    <h3 id="score">分数：0</h3> -->
+    <div id="app">
+        <img src="./images/start.png" alt="" class="start">
+        <img src="./images/start.png" alt="" class="suspend">
+    </div>
+    <!-- <script src="js/last.js"></script> -->
+    <script src="./js/Snake.js"></script>
+    <script src="./js/Food.js"></script>
+    <script src="./js/Game.js"></script>
+    <script>
+        var game = null;
+        var flag = true;
+        var suspend = document.querySelector('.suspend');
+        document.querySelector('.start').addEventListener('click', function() {
+            // document.querySelector('#app').style.backgroundColor='white';
+            this.style.display = 'none';
+            game = new Game();
+            document.querySelector('table').addEventListener('click', function() {
+                clearInterval(game.timer);
+                suspend.style.display = 'block';
+ 
+            })
+            suspend.addEventListener('click', function() {
+                suspend.style.display = 'none';
+                game.timer = setInterval(function() {
+                    game.f++;
+                    // document.getElementById('f').innerHTML = '帧编号：' + game.f;
+                    // document.getElementById('score').innerHTML = '分数：' + game.score;
+                    // 清屏
+                    game.clear();
+                    // 蛇的运动（更新）
+                    // 蛇的更新速度，当蛇变长的时候，速度要加快
+                    var during = game.snake.body.length < 30 ? 30 - game.snake.body.length : 1;
+                    game.f % during == 0 && game.snake.update();
+ 
+                    // game.snake.update();
+                    // 渲染蛇
+                    game.snake.render();
+                    // 渲染食物
+                    game.food.render();
+                }, 10)
+            })
+        })
+    </script>
+</body>
+ 
+</html>
